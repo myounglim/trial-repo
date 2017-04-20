@@ -118,18 +118,33 @@ class L2Forwarding(app_manager.RyuApp):
 
         if dst in self.mac_to_port[dpid]:
             out_port = self.mac_to_port[dpid][dst]
-        else:
-            out_port = ofp.OFPP_FLOOD
-
-        actions = [ofp_parser.OFPActionOutput(out_port)]
-
-        if out_port != ofp.OFPP_FLOOD:
+            actions = [ofp_parser.OFPActionOutput(out_port)]
             self.add_flow(datapath, msg.in_port, dst, actions)
+            out = ofp_parser.OFPPacketOut(
+                datapath=datapath, buffer_id=msg.buffer_id, in_port=msg.in_port,
+                actions=actions)
+            datapath.send_msg(out)
+        else:
+            #out_port = ofp.OFPP_FLOOD
+            att = nx.get_node_attributes(self.ST, 'ports')
+            for neighbor, port in att[dpid]:
+                actions = [ofp_parser.OFPActionOutput(port)]
+                out = ofp_parser.OFPPacketOut(
+                    datapath=datapath, buffer_id=msg.buffer_id, in_port=msg.in_port,
+                    actions=actions)
+                datapath.send_msg(out)
+
+        # actions = [ofp_parser.OFPActionOutput(out_port)]
+
+        # if out_port != ofp.OFPP_FLOOD:
+        #     self.add_flow(datapath, msg.in_port, dst, actions)
+
+
     # We create an OF_PacketOut message with action of type FLOOD
     # This simple forwarding action works only for loopless topologies
         #actions = [ofp_parser.OFPActionOutput(ofp.OFPP_FLOOD)]
-        out = ofp_parser.OFPPacketOut(
-            datapath=datapath, buffer_id=msg.buffer_id, in_port=msg.in_port,
-            actions=actions)
-        datapath.send_msg(out)
+        # out = ofp_parser.OFPPacketOut(
+        #     datapath=datapath, buffer_id=msg.buffer_id, in_port=msg.in_port,
+        #     actions=actions)
+        # datapath.send_msg(out)
 

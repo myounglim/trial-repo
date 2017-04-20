@@ -29,8 +29,10 @@ class L2Forwarding(app_manager.RyuApp):
         self.G = load_topology(topo_file)
 
         # For each node in the graph, add an attribute mac-to-port
-        for n in self.G.nodes():
-            self.G.add_node(n, mactoport={})
+        # for n in self.G.nodes():
+        #     self.G.add_node(n, mactoport={})
+
+        self.mac_to_port = {}
 
         # Compute a Spanning Tree for the graph G
         self.ST = compute_spanning_tree(self.G)
@@ -109,11 +111,12 @@ class L2Forwarding(app_manager.RyuApp):
 
         graph = self.G
 
-        graph.node[dpid]['mactoport'][src] = msg.in_port
-        print self.get_str_mactoport(graph, dpid)
+        # graph.node[dpid]['mactoport'][src] = msg.in_port
+        # print self.get_str_mactoport(graph, dpid)
+        self.mac_to_port[dpid][src] = msg.in_port
 
-        if dst in graph.node[dpid]['mactoport']:
-            out_port = graph.node[dpid]['mactoport'][dst]
+        if dst in self.mac_to_port[dpid]:
+            out_port = self.mac_to_port[dpid][dst]
         else:
             out_port = ofp.OFPP_FLOOD
 

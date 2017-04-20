@@ -80,15 +80,27 @@ class L2Forwarding(app_manager.RyuApp):
     @set_ev_cls(ofp_event.EventOFPPacketIn, MAIN_DISPATCHER)
     def packet_in_handler(self, ev):
         msg = ev.msg
-        dp = msg.datapath
-        ofp = dp.ofproto
-        ofp_parser = dp.ofproto_parser
+        datapath = msg.datapath
+        ofp = datapath.ofproto
+        ofp_parser = datapath.ofproto_parser
+
+
+        pkt = packet.Packet(msg.data)
+        eth = pkt.get_protocol(ethernet.ethernet)
+
+        dst = eth.dst
+        src = eth.src
+
+        dpid = datapath.id
+
+        print self.get_str_mactoport(self.G, dpid)
+
 	
 	# We create an OF_PacketOut message with action of type FLOOD
 	# This simple forwarding action works only for loopless topologies
         actions = [ofp_parser.OFPActionOutput(ofp.OFPP_FLOOD)]
         out = ofp_parser.OFPPacketOut(
-            datapath=dp, buffer_id=msg.buffer_id, in_port=msg.in_port,
+            datapath=datapath, buffer_id=msg.buffer_id, in_port=msg.in_port,
             actions=actions)
-        dp.send_msg(out)
+        datapath.send_msg(out)
 

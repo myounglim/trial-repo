@@ -74,6 +74,20 @@ class L2Forwarding(app_manager.RyuApp):
     def _ev_switch_leave_handler(self, ev):
         print('leave: %s' % ev)
 
+    # from simple_switch.py
+    def add_flow(self, datapath, in_port, dst, actions):
+        ofproto = datapath.ofproto
+
+        match = datapath.ofproto_parser.OFPMatch(
+            in_port=in_port, dl_dst=haddr_to_bin(dst))
+
+        mod = datapath.ofproto_parser.OFPFlowMod(
+            datapath=datapath, match=match, cookie=0,
+            command=ofproto.OFPFC_ADD, idle_timeout=0, hard_timeout=0,
+            priority=ofproto.OFP_DEFAULT_PRIORITY,
+            flags=ofproto.OFPFF_SEND_FLOW_REM, actions=actions)
+        datapath.send_msg(mod)
+
     # This method is called every time an OF_PacketIn message is received by 
     # the switch. Here we must calculate the best action to take and install
     # a new entry on the switch's forwarding table if necessary
@@ -98,12 +112,18 @@ class L2Forwarding(app_manager.RyuApp):
         graph.node[dpid]['mactoport'][src] = msg.in_port
         print self.get_str_mactoport(graph, dpid)
 
+        if dst in graph.node[dpid]['mactoport']:
+            out_port = graph.node[dpid]['mactoport'][dst]
+        else:
+            out_port = ofp.OFPP_FLOOD
 
+        actions = [ofp_parser.OFPActionOutput(out_port)]
 
-	
-	# We create an OF_PacketOut message with action of type FLOOD
-	# This simple forwarding action works only for loopless topologies
-        actions = [ofp_parser.OFPActionOutput(ofp.OFPP_FLOOD)]
+        if out_port != ofp.OFPP_FLOOD:
+            self.add_flow(datapath, msg.in_port, dst, actions)
+    # We create an OF_PacketOut message with action of type FLOOD
+    # This simple forwarding action works only for loopless topologies
+        #actions = [ofp_parser.OFPActionOutput(ofp.OFPP_FLOOD)]
         out = ofp_parser.OFPPacketOut(
             datapath=datapath, buffer_id=msg.buffer_id, in_port=msg.in_port,
             actions=actions)

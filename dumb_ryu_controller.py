@@ -93,7 +93,12 @@ class L2Forwarding(app_manager.RyuApp):
 
         dpid = datapath.id
 
-        print self.get_str_mactoport(self.G, dpid)
+        graph = self.G
+
+        graph.node[dpid]['mactoport'][src] = msg.in_port
+        print self.get_str_mactoport(graph, dpid)
+
+
 
 	
 	# We create an OF_PacketOut message with action of type FLOOD

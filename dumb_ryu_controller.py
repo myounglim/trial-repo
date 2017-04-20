@@ -108,6 +108,7 @@ class L2Forwarding(app_manager.RyuApp):
         src = eth.src
 
         dpid = datapath.id
+        self.mac_to_port.setdefault(dpid, {})
 
         graph = self.G
 

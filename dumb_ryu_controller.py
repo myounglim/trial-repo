@@ -20,6 +20,7 @@ def compute_spanning_tree(G):
 
     return ST
 
+
 class L2Forwarding(app_manager.RyuApp):
     def __init__(self, *args, **kwargs):
         super(L2Forwarding, self).__init__(*args, **kwargs)
@@ -33,6 +34,8 @@ class L2Forwarding(app_manager.RyuApp):
         #     self.G.add_node(n, mactoport={})
 
         self.mac_to_port = {}
+
+        self.counter = 0
 
         # Compute a Spanning Tree for the graph G
         self.ST = compute_spanning_tree(self.G)
@@ -124,20 +127,23 @@ class L2Forwarding(app_manager.RyuApp):
                 actions=actions)
             datapath.send_msg(out)
         else:
-            # out_port = ofp.OFPP_FLOOD
-            # actions = [ofp_parser.OFPActionOutput(out_port)]
-            # out = ofp_parser.OFPPacketOut(
-            #     datapath=datapath, buffer_id=msg.buffer_id, in_port=msg.in_port,
-            #     actions=actions)
-            # datapath.send_msg(out)
-            att = nx.get_node_attributes(self.ST, 'ports')
-            for neighbor, port in att[dpid].iteritems():
-                print neighbor, port
-                actions = [ofp_parser.OFPActionOutput(port)]
+            if self.counter == 0:
+                self.counter += 1
+                out_port = ofp.OFPP_FLOOD
+                actions = [ofp_parser.OFPActionOutput(out_port)]
                 out = ofp_parser.OFPPacketOut(
                     datapath=datapath, buffer_id=msg.buffer_id, in_port=msg.in_port,
                     actions=actions)
                 datapath.send_msg(out)
+            else:
+                att = nx.get_node_attributes(self.ST, 'ports')
+                for neighbor, port in att[dpid].iteritems():
+                    print neighbor, port
+                    actions = [ofp_parser.OFPActionOutput(port)]
+                    out = ofp_parser.OFPPacketOut(
+                        datapath=datapath, buffer_id=msg.buffer_id, in_port=msg.in_port,
+                        actions=actions)
+                    datapath.send_msg(out)
 
         # actions = [ofp_parser.OFPActionOutput(out_port)]
 

@@ -141,7 +141,7 @@ class L2Forwarding(app_manager.RyuApp):
             # datapath.send_msg(out)
 
             for mac_addr, outport in self.ST.node[dpid].items():
-                actions = [ofp_parser.OFPActionOutput(outport)]
+                actions = [ofp_parser.OFPActionOutput(int(outport))]
                 out = ofp_parser.OFPPacketOut(
                         datapath=datapath, buffer_id=msg.buffer_id, in_port=msg.in_port,
                         actions=actions)

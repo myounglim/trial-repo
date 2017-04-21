@@ -94,6 +94,20 @@ class L2Forwarding(app_manager.RyuApp):
             flags=ofproto.OFPFF_SEND_FLOW_REM, actions=actions)
         datapath.send_msg(mod)
 
+    def get_neighbors(self, dpid, graph):
+        neighbors = [graph.node[dpid]['ports']['host']]
+        for neighbor in graph[dpid]:
+            neighbors.append(graph.node[dpid]['ports'][str(neighbor)])
+        return neighbors
+
+    def flood_on_graph(self, dpid, datapath):
+        neighbors = self.get_neighbors(dpid, self.ST)
+        actions = []
+        for out_port in neighbors:
+            actions.append(ofp_parser.OFPActionOutput(out_port))
+        out = ofp_parser.OFPPacketOut(actions=actions)
+        datapath.send_msg(out)
+
     # This method is called every time an OF_PacketIn message is received by
     # the switch. Here we must calculate the best action to take and install
     # a new entry on the switch's forwarding table if necessary
@@ -136,12 +150,19 @@ class L2Forwarding(app_manager.RyuApp):
                 actions=actions)
             datapath.send_msg(out)
         else:
-            out_port = ofproto.OFPP_FLOOD
-            actions = [ofp_parser.OFPActionOutput(out_port)]
-            out = ofp_parser.OFPPacketOut(
-                datapath=datapath, buffer_id=msg.buffer_id, in_port=msg.in_port,
-                actions=actions)
+            neighbors = self.get_neighbors(dpid, self.ST)
+            actions = []
+            for out_port in neighbors:
+                actions.append(ofp_parser.OFPActionOutput(out_port))
+            out = ofp_parser.OFPPacketOut(actions=actions)
             datapath.send_msg(out)
+
+            # out_port = ofproto.OFPP_FLOOD
+            # actions = [ofp_parser.OFPActionOutput(out_port)]
+            # out = ofp_parser.OFPPacketOut(
+            #     datapath=datapath, buffer_id=msg.buffer_id, in_port=msg.in_port,
+            #     actions=actions)
+            # datapath.send_msg(out)
 
             # for mac_addr, outport in self.ST.node[dpid].items():
             #     for key, value in outport.items():

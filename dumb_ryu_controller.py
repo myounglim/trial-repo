@@ -133,12 +133,19 @@ class L2Forwarding(app_manager.RyuApp):
                 actions=actions)
             datapath.send_msg(out)
         else:
-            out_port = ofp.OFPP_FLOOD
-            actions = [ofp_parser.OFPActionOutput(out_port)]
-            out = ofp_parser.OFPPacketOut(
-                datapath=datapath, buffer_id=msg.buffer_id, in_port=msg.in_port,
-                actions=actions)
-            datapath.send_msg(out)
+            # out_port = ofp.OFPP_FLOOD
+            # actions = [ofp_parser.OFPActionOutput(out_port)]
+            # out = ofp_parser.OFPPacketOut(
+            #     datapath=datapath, buffer_id=msg.buffer_id, in_port=msg.in_port,
+            #     actions=actions)
+            # datapath.send_msg(out)
+
+            for mac_addr, outport in self.ST.node[dpid].items():
+                actions = [ofp_parser.OFPActionOutput(outport)]
+                out = ofp_parser.OFPPacketOut(
+                        datapath=datapath, buffer_id=msg.buffer_id, in_port=msg.in_port,
+                        actions=actions)
+                datapath.send_msg(out)
 
             # neighbors = self.ST[dpid]
             # print neighbors

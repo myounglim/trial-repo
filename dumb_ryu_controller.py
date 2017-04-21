@@ -117,7 +117,7 @@ class L2Forwarding(app_manager.RyuApp):
         # print self.get_str_mactoport(graph, dpid)
 
         self.mac_to_port[dpid][src] = msg.in_port
-        print self.get_str_mactoport(self.ST, dpid)
+        # print self.get_str_mactoport(self.ST, dpid)
         res = 'MAC-To-Port table of the switch ' + str(dpid) + '\n'
         for mac_addr, outport in self.ST.node[dpid].items():
             res += str(mac_addr) + ' -> ' + str(outport) + '\n'
@@ -147,16 +147,16 @@ class L2Forwarding(app_manager.RyuApp):
             #                 actions=actions)
             #         datapath.send_msg(out)
 
-            att = nx.get_node_attributes(self.ST, 'ports')
-            neighbors = self.ST[dpid]
-            str_neighbors = str(neighbors)
-            print str_neighbors
-            print att[dpid]
+            # att = nx.get_node_attributes(self.ST, 'ports')
+            # neighbors = self.ST[dpid]
+            # str_neighbors = str(neighbors)
+            # print str_neighbors
+            # print att[dpid]
 
             # print neighbors
-            # att = nx.get_node_attributes(self.ST, 'ports')
-            # for neighbor, port in att[dpid].iteritems():
-            #     print neighbor, port
+            att = nx.get_node_attributes(self.ST, 'ports')
+            for neighbor, port in att[dpid].iteritems():
+                print neighbor, port
             #     actions = [ofp_parser.OFPActionOutput(port)]
             #     out = ofp_parser.OFPPacketOut(
             #         datapath=datapath, buffer_id=msg.buffer_id, in_port=msg.in_port,

@@ -31,8 +31,8 @@ class L2Forwarding(app_manager.RyuApp):
         self.G = load_topology(topo_file)
 
         # For each node in the graph, add an attribute mac-to-port
-        # for n in self.G.nodes():
-        #     self.G.add_node(n, mactoport={})
+        for n in self.G.nodes():
+            self.G.add_node(n, mactoport={})
 
         self.mac_to_port = {}
 
@@ -135,6 +135,8 @@ class L2Forwarding(app_manager.RyuApp):
                 actions=actions)
             datapath.send_msg(out)
 
+            neighbors = self.ST[dpid]
+            print neighbors
             # att = nx.get_node_attributes(self.ST, 'ports')
             # for neighbor, port in att[dpid].iteritems():
             #     print neighbor, port

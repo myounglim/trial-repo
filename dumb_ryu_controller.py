@@ -113,10 +113,9 @@ class L2Forwarding(app_manager.RyuApp):
         dpid = datapath.id
         self.mac_to_port.setdefault(dpid, {})
 
-        graph = self.G
-
         # graph.node[dpid]['mactoport'][src] = msg.in_port
         # print self.get_str_mactoport(graph, dpid)
+
         self.mac_to_port[dpid][src] = msg.in_port
         print self.get_str_mactoport(self.ST, dpid)
         res = 'MAC-To-Port table of the switch ' + str(dpid) + '\n'
@@ -140,15 +139,20 @@ class L2Forwarding(app_manager.RyuApp):
             #     actions=actions)
             # datapath.send_msg(out)
 
-            for mac_addr, outport in self.ST.node[dpid].items():
-                for key, value in outport.items():
-                    actions = [ofp_parser.OFPActionOutput(value)]
-                    out = ofp_parser.OFPPacketOut(
-                            datapath=datapath, buffer_id=msg.buffer_id, in_port=msg.in_port,
-                            actions=actions)
-                    datapath.send_msg(out)
+            # for mac_addr, outport in self.ST.node[dpid].items():
+            #     for key, value in outport.items():
+            #         actions = [ofp_parser.OFPActionOutput(value)]
+            #         out = ofp_parser.OFPPacketOut(
+            #                 datapath=datapath, buffer_id=msg.buffer_id, in_port=msg.in_port,
+            #                 actions=actions)
+            #         datapath.send_msg(out)
 
-            # neighbors = self.ST[dpid]
+            att = nx.get_node_attributes(self.ST, 'ports')
+            neighbors = self.ST[dpid]
+            str_neighbors = str(neighbors)
+            print str_neighbors
+            print att[dpid]
+
             # print neighbors
             # att = nx.get_node_attributes(self.ST, 'ports')
             # for neighbor, port in att[dpid].iteritems():

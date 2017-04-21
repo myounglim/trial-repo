@@ -158,9 +158,12 @@ class L2Forwarding(app_manager.RyuApp):
             print att[dpid]['host']
             outport = att[dpid]['host']
             actions = [ofp_parser.OFPActionOutput(outport)]
+            data = None
+            if msg.buffer_id == ofproto.OFP_NO_BUFFER:
+                data = msg.data
             out = ofp_parser.OFPPacketOut(
                 datapath=datapath, buffer_id=msg.buffer_id, in_port=msg.in_port,
-                actions=actions)
+                actions=actions, data=data)
             datapath.send_msg(out)
             # for neighbor, port in att[dpid].iteritems():
             #     print neighbor, port

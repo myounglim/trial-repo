@@ -119,6 +119,10 @@ class L2Forwarding(app_manager.RyuApp):
         # print self.get_str_mactoport(graph, dpid)
         self.mac_to_port[dpid][src] = msg.in_port
         print self.get_str_mactoport(self.ST, dpid)
+        res = 'MAC-To-Port table of the switch ' + str(dpid) + '\n'
+        for mac_addr, outport in self.ST.node[dpid].items():
+            res += str(mac_addr) + ' -> ' + str(outport) + '\n'
+            print res
 
         if dst in self.mac_to_port[dpid]:
             out_port = self.mac_to_port[dpid][dst]

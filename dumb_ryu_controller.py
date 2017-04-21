@@ -105,7 +105,8 @@ class L2Forwarding(app_manager.RyuApp):
         actions = []
         for out_port in neighbors:
             actions.append(ofp_parser.OFPActionOutput(out_port))
-        out = ofp_parser.OFPPacketOut(actions=actions)
+        out = ofp_parser.OFPPacketOut(datapath=datapath, buffer_id=msg.buffer_id, in_port=msg.in_port,
+                                      actions=actions)
         datapath.send_msg(out)
 
     # This method is called every time an OF_PacketIn message is received by
@@ -154,7 +155,9 @@ class L2Forwarding(app_manager.RyuApp):
             actions = []
             for out_port in neighbors:
                 actions.append(ofp_parser.OFPActionOutput(out_port))
-            out = ofp_parser.OFPPacketOut(actions=actions)
+            out = ofp_parser.OFPPacketOut(
+                datapath=datapath, buffer_id=msg.buffer_id, in_port=msg.in_port,
+                actions=actions)
             datapath.send_msg(out)
 
             # out_port = ofproto.OFPP_FLOOD

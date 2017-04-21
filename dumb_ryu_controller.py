@@ -157,6 +157,8 @@ class L2Forwarding(app_manager.RyuApp):
             att = nx.get_node_attributes(self.ST, 'ports')
             for neighbor, port in att[dpid].iteritems():
                 print neighbor, port
+                if neighbor == host:
+                    print "I am equal to the host"
             #     actions = [ofp_parser.OFPActionOutput(port)]
             #     out = ofp_parser.OFPPacketOut(
             #         datapath=datapath, buffer_id=msg.buffer_id, in_port=msg.in_port,

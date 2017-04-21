@@ -124,6 +124,7 @@ class L2Forwarding(app_manager.RyuApp):
             print res
 
         if dst in self.mac_to_port[dpid]:
+            print "found in dictionary"
             out_port = self.mac_to_port[dpid][dst]
             actions = [ofp_parser.OFPActionOutput(out_port)]
             self.add_flow(datapath, msg.in_port, dst, actions)
@@ -154,6 +155,7 @@ class L2Forwarding(app_manager.RyuApp):
             # print att[dpid]
 
             # print neighbors
+            print "can't find in dictionary"
             att = nx.get_node_attributes(self.ST, 'ports')
             print att[dpid]['host']
             outport = att[dpid]['host']

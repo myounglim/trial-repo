@@ -135,8 +135,9 @@ class L2Forwarding(app_manager.RyuApp):
                 actions=actions)
             datapath.send_msg(out)
 
-            neighbors = self.ST[dpid]
-            print neighbors
+            # neighbors = self.ST[dpid]
+            # print neighbors
+            print self.get_str_mactoport(self.ST, dpid)
             # att = nx.get_node_attributes(self.ST, 'ports')
             # for neighbor, port in att[dpid].iteritems():
             #     print neighbor, port

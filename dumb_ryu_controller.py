@@ -101,7 +101,7 @@ class L2Forwarding(app_manager.RyuApp):
     def packet_in_handler(self, ev):
         msg = ev.msg
         datapath = msg.datapath
-        ofp = datapath.ofproto
+        ofproto = datapath.ofproto
         ofp_parser = datapath.ofproto_parser
 
         pkt = packet.Packet(msg.data)

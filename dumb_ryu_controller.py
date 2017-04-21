@@ -128,6 +128,7 @@ class L2Forwarding(app_manager.RyuApp):
         if dst in self.mac_to_port[dpid]:
             print "found in dictionary"
             out_port = self.mac_to_port[dpid][dst]
+            print "out_port: " + str(out_port)
             actions = [ofp_parser.OFPActionOutput(out_port)]
             self.add_flow(datapath, msg.in_port, dst, actions)
             out = ofp_parser.OFPPacketOut(
@@ -135,12 +136,12 @@ class L2Forwarding(app_manager.RyuApp):
                 actions=actions)
             datapath.send_msg(out)
         else:
-            # out_port = ofp.OFPP_FLOOD
-            # actions = [ofp_parser.OFPActionOutput(out_port)]
-            # out = ofp_parser.OFPPacketOut(
-            #     datapath=datapath, buffer_id=msg.buffer_id, in_port=msg.in_port,
-            #     actions=actions)
-            # datapath.send_msg(out)
+            out_port = ofp.OFPP_FLOOD
+            actions = [ofp_parser.OFPActionOutput(out_port)]
+            out = ofp_parser.OFPPacketOut(
+                datapath=datapath, buffer_id=msg.buffer_id, in_port=msg.in_port,
+                actions=actions)
+            datapath.send_msg(out)
 
             # for mac_addr, outport in self.ST.node[dpid].items():
             #     for key, value in outport.items():
@@ -157,20 +158,21 @@ class L2Forwarding(app_manager.RyuApp):
             # print att[dpid]
 
             # print neighbors
-            print "can't find in dictionary"
-            att = nx.get_node_attributes(self.ST, 'ports')
-            print att[dpid]['host']
-            outport = att[dpid]['host']
-            actions = [ofp_parser.OFPActionOutput(outport)]
+            # print "can't find in dictionary"
+            # att = nx.get_node_attributes(self.ST, 'ports')
+            # print att[dpid]['host']
+            # outport = att[dpid]['host']
+            # actions = [ofp_parser.OFPActionOutput(outport)]
+            #
+            # data = None
+            # if msg.buffer_id == ofproto.OFP_NO_BUFFER:
+            #     data = msg.data
+            #
+            # out = ofp_parser.OFPPacketOut(
+            #     datapath=datapath, buffer_id=msg.buffer_id, in_port=msg.in_port,
+            #     actions=actions, data=data)
+            # datapath.send_msg(out)
 
-            data = None
-            if msg.buffer_id == ofproto.OFP_NO_BUFFER:
-                data = msg.data
-
-            out = ofp_parser.OFPPacketOut(
-                datapath=datapath, buffer_id=msg.buffer_id, in_port=msg.in_port,
-                actions=actions, data=data)
-            datapath.send_msg(out)
             # for neighbor, port in att[dpid].iteritems():
             #     print neighbor, port
             #     if neighbor == 'host':

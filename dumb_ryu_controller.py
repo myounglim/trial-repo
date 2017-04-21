@@ -118,6 +118,7 @@ class L2Forwarding(app_manager.RyuApp):
         # graph.node[dpid]['mactoport'][src] = msg.in_port
         # print self.get_str_mactoport(graph, dpid)
         self.mac_to_port[dpid][src] = msg.in_port
+        print self.get_str_mactoport(self.ST, dpid)
 
         if dst in self.mac_to_port[dpid]:
             out_port = self.mac_to_port[dpid][dst]
@@ -137,7 +138,6 @@ class L2Forwarding(app_manager.RyuApp):
 
             # neighbors = self.ST[dpid]
             # print neighbors
-            print self.get_str_mactoport(self.ST, dpid)
             # att = nx.get_node_attributes(self.ST, 'ports')
             # for neighbor, port in att[dpid].iteritems():
             #     print neighbor, port

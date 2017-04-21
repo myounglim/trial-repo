@@ -126,14 +126,19 @@ class L2Forwarding(app_manager.RyuApp):
             datapath.send_msg(out)
         else:
             out_port = ofp.OFPP_FLOOD
-            att = nx.get_node_attributes(self.ST, 'ports')
-            for neighbor, port in att[dpid].iteritems():
-                #print neighbor, port
-                actions = [ofp_parser.OFPActionOutput(port)]
-                out = ofp_parser.OFPPacketOut(
-                    datapath=datapath, buffer_id=msg.buffer_id, in_port=msg.in_port,
-                    actions=actions)
-                datapath.send_msg(out)
+            actions = [ofp_parser.OFPActionOutput(out_port)]
+            out = ofp_parser.OFPPacketOut(
+                datapath=datapath, buffer_id=msg.buffer_id, in_port=msg.in_port,
+                actions=actions)
+            datapath.send_msg(out)
+            # att = nx.get_node_attributes(self.ST, 'ports')
+            # for neighbor, port in att[dpid].iteritems():
+            #     #print neighbor, port
+            #     actions = [ofp_parser.OFPActionOutput(port)]
+            #     out = ofp_parser.OFPPacketOut(
+            #         datapath=datapath, buffer_id=msg.buffer_id, in_port=msg.in_port,
+            #         actions=actions)
+            #     datapath.send_msg(out)
 
         # actions = [ofp_parser.OFPActionOutput(out_port)]
 

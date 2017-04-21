@@ -136,7 +136,7 @@ class L2Forwarding(app_manager.RyuApp):
                 actions=actions)
             datapath.send_msg(out)
         else:
-            out_port = ofp.OFPP_FLOOD
+            out_port = ofproto.OFPP_FLOOD
             actions = [ofp_parser.OFPActionOutput(out_port)]
             out = ofp_parser.OFPPacketOut(
                 datapath=datapath, buffer_id=msg.buffer_id, in_port=msg.in_port,

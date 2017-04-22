@@ -23,26 +23,26 @@ def compute_spanning_tree(G):
 
 
 def my_compute_spanning_tree(graph):
-    print "printing graph..."
+    # print "printing graph..."
     # print graph
     # print graph.node
-    print "\n"
-    print nx.get_node_attributes(graph, 'ports')
-    print "\n"
+    # print "\n"
+    # print nx.get_node_attributes(graph, 'ports')
+    # print "\n"
 
-    print "Getting neighbors..."
-    res = 'Edges:\tfrom->to\n'
-    for node in graph:
-        totmp = []
-        for adjacent in graph[node]:
-            totmp.append(adjacent)
-        res += str(node) + ' -> ' + str(totmp) + '\n'
-
-    print res
+    # print "Getting neighbors..."
+    # res = 'Edges:\tfrom->to\n'
+    # for node in graph:
+    #     totmp = []
+    #     for adjacent in graph[node]:
+    #         totmp.append(adjacent)
+    #     res += str(node) + ' -> ' + str(totmp) + '\n'
+    #
+    # print res
     my_graph = nx.Graph()
     my_graph.add_nodes_from(graph.nodes(data=True))
-    print my_graph.node
-    print "\n"
+    # print my_graph.node
+    # print "\n"
     my_graph = spanning_bfs(graph, my_graph)
     return my_graph
 
@@ -96,10 +96,13 @@ class L2Forwarding(app_manager.RyuApp):
         # Compute a Spanning Tree for the graph G
         self.ST = compute_spanning_tree(self.G)
 
+        print "Regular..."
         print self.get_str_topo(self.G)
+        print "\nSpanning..."
         print self.get_str_topo(self.ST)
         # my_compute_spanning_tree(self.G)
         min_spanning_tree = my_compute_spanning_tree(self.G)
+        print "\nMy Spanning!"
         print self.get_str_topo(min_spanning_tree)
 
     # This method returns a string that describes a graph (nodes and edges, with

@@ -24,14 +24,14 @@ def compute_spanning_tree(G):
 
 def my_compute_spanning_tree(graph):
     print "printing graph..."
-    print graph
+    # print graph
     print "\n"
     print graph.node
     print "\n"
     print nx.get_node_attributes(graph, 'ports')
     my_graph = nx.Graph()
     my_graph.add_nodes_from(graph.nodes(data=True))
-    print my_graph
+    print my_graph.node
 
 
 class L2Forwarding(app_manager.RyuApp):

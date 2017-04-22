@@ -25,6 +25,8 @@ def compute_spanning_tree(G):
 def my_compute_spanning_tree(graph):
     print "printing graph..."
     print graph.node
+    print "\n"
+    print nx.get_node_attributes(graph, 'ports')
 
 
 class L2Forwarding(app_manager.RyuApp):

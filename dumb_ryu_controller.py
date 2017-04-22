@@ -32,6 +32,7 @@ def my_compute_spanning_tree(graph):
     my_graph = nx.Graph()
     my_graph.add_nodes_from(graph.nodes(data=True))
     print my_graph.node
+    return my_graph
 
 
 class L2Forwarding(app_manager.RyuApp):
@@ -56,7 +57,8 @@ class L2Forwarding(app_manager.RyuApp):
         print self.get_str_topo(self.G)
         print self.get_str_topo(self.ST)
         # my_compute_spanning_tree(self.G)
-        my_compute_spanning_tree(self.ST)
+        min_spanning_tree = my_compute_spanning_tree(self.ST)
+        print self.get_str_topo(min_spanning_tree)
 
     # This method returns a string that describes a graph (nodes and edges, with
     # their attributes). You do not need to modify this method.

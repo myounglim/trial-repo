@@ -52,7 +52,7 @@ def spanning_bfs(original_graph, new_graph):
     source = {}
     for node in original_graph:
         if node in source:
-            new_graph.add_edge(source[node])
+            new_graph.add_edge(node, source[node])
         for adjacent in original_graph[node]:
             if adjacent in seen:
                 continue

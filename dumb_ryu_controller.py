@@ -51,6 +51,7 @@ class L2Forwarding(app_manager.RyuApp):
         print self.get_str_topo(self.G)
         print self.get_str_topo(self.ST)
         my_compute_spanning_tree(self.G)
+        my_compute_spanning_tree(self.ST)
 
     # This method returns a string that describes a graph (nodes and edges, with
     # their attributes). You do not need to modify this method.

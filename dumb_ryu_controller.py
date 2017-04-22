@@ -23,6 +23,7 @@ def compute_spanning_tree(G):
 
 
 def my_compute_spanning_tree(graph):
+    print "printing graph..."
     print graph.node
 
 
@@ -35,8 +36,8 @@ class L2Forwarding(app_manager.RyuApp):
         self.G = load_topology(topo_file)
 
         # For each node in the graph, add an attribute mac-to-port
-        for n in self.G.nodes():
-            self.G.add_node(n, mactoport={})
+        # for n in self.G.nodes():
+        #     self.G.add_node(n, mactoport={})
 
         self.mac_to_port = {}
 

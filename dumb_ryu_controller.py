@@ -29,6 +29,15 @@ def my_compute_spanning_tree(graph):
     print "\n"
     print nx.get_node_attributes(graph, 'ports')
     print "\n"
+
+    res = 'Edges:\tfrom->to\n'
+    for f in graph:
+        totmp = []
+        for t in graph[f]:
+            totmp.append(t)
+        res += str(f) + ' -> ' + str(totmp) + '\n'
+
+    print res
     my_graph = nx.Graph()
     my_graph.add_nodes_from(graph.nodes(data=True))
     print my_graph.node

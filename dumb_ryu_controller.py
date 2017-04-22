@@ -30,12 +30,13 @@ def my_compute_spanning_tree(graph):
     print nx.get_node_attributes(graph, 'ports')
     print "\n"
 
+    print "Getting neighbors..."
     res = 'Edges:\tfrom->to\n'
-    for f in graph:
+    for node in graph:
         totmp = []
-        for t in graph[f]:
-            totmp.append(t)
-        res += str(f) + ' -> ' + str(totmp) + '\n'
+        for adjacent in graph[node]:
+            totmp.append(adjacent)
+        res += str(node) + ' -> ' + str(totmp) + '\n'
 
     print res
     my_graph = nx.Graph()

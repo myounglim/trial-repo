@@ -25,7 +25,7 @@ def compute_spanning_tree(G):
 def my_compute_spanning_tree(graph):
     print "printing graph..."
     # print graph
-    print graph.node
+    # print graph.node
     print "\n"
     print nx.get_node_attributes(graph, 'ports')
     print "\n"
@@ -42,7 +42,39 @@ def my_compute_spanning_tree(graph):
     my_graph = nx.Graph()
     my_graph.add_nodes_from(graph.nodes(data=True))
     print my_graph.node
+    print "\n"
+    my_graph = spanning_bfs(graph, my_graph)
     return my_graph
+
+
+def spanning_bfs(original_graph, new_graph):
+    seen = set()
+    source = {}
+    for node in original_graph:
+        if node in source:
+            new_graph.add_edge(source[node])
+        for adjacent in original_graph[node]:
+            if adjacent in seen:
+                continue
+            else:
+                seen.add(adjacent)
+                new_graph.add_edge(node, adjacent)
+                source[adjacent] = node
+    return new_graph
+
+
+# def spanning_dfs(original_graph, new_graph):
+#     node = original_graph[0]
+#     nodes_to_visit = [node]
+#     visited = set()
+#     while nodes_to_visit:
+#         next_node = nodes_to_visit.pop()
+#         if next_node in visited:
+#             continue
+#         else:
+#             visited.add(next_node)
+#             for adjacent in original_graph[next_node]:
+#                 nodes_to_visit.append(adjacent)
 
 
 class L2Forwarding(app_manager.RyuApp):
@@ -67,7 +99,7 @@ class L2Forwarding(app_manager.RyuApp):
         print self.get_str_topo(self.G)
         print self.get_str_topo(self.ST)
         # my_compute_spanning_tree(self.G)
-        min_spanning_tree = my_compute_spanning_tree(self.ST)
+        min_spanning_tree = my_compute_spanning_tree(self.G)
         print self.get_str_topo(min_spanning_tree)
 
     # This method returns a string that describes a graph (nodes and edges, with

@@ -98,11 +98,11 @@ class L2Forwarding(app_manager.RyuApp):
 
         print "Regular..."
         print self.get_str_topo(self.G)
-        print "\nSpanning..."
+        print "Spanning..."
         print self.get_str_topo(self.ST)
         # my_compute_spanning_tree(self.G)
         min_spanning_tree = my_compute_spanning_tree(self.G)
-        print "\nMy Spanning!"
+        print "My Spanning!"
         print self.get_str_topo(min_spanning_tree)
 
     # This method returns a string that describes a graph (nodes and edges, with

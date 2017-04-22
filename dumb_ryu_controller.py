@@ -24,9 +24,14 @@ def compute_spanning_tree(G):
 
 def my_compute_spanning_tree(graph):
     print "printing graph..."
+    print graph
+    print "\n"
     print graph.node
     print "\n"
     print nx.get_node_attributes(graph, 'ports')
+    my_graph = nx.Graph()
+    my_graph.add_nodes_from(graph.nodes(data=True))
+    print my_graph
 
 
 class L2Forwarding(app_manager.RyuApp):
@@ -50,7 +55,7 @@ class L2Forwarding(app_manager.RyuApp):
 
         print self.get_str_topo(self.G)
         print self.get_str_topo(self.ST)
-        my_compute_spanning_tree(self.G)
+        # my_compute_spanning_tree(self.G)
         my_compute_spanning_tree(self.ST)
 
     # This method returns a string that describes a graph (nodes and edges, with

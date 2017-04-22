@@ -12,13 +12,12 @@ from ryu.lib.packet import ether_types
 from topology import load_topology
 import networkx as nx
 
+
 # This function takes as input a networkx graph. It then computes
 # the minimum Spanning Tree, and returns it, as a networkx graph.
 def compute_spanning_tree(G):
-
     # The Spanning Tree of G
     ST = nx.minimum_spanning_tree(G)
-
     return ST
 
 
@@ -187,7 +186,7 @@ class L2Forwarding(app_manager.RyuApp):
         dst = eth.dst
         src = eth.src
 
-        print "destination: " + str(dst) + "\tsource: " + src
+        # print "destination: " + str(dst) + "\tsource: " + src
 
         dpid = datapath.id
         self.mac_to_port.setdefault(dpid, {})

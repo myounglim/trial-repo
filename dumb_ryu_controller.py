@@ -22,6 +22,10 @@ def compute_spanning_tree(G):
     return ST
 
 
+def my_compute_spanning_tree(graph):
+    print graph.node
+
+
 class L2Forwarding(app_manager.RyuApp):
     def __init__(self, *args, **kwargs):
         super(L2Forwarding, self).__init__(*args, **kwargs)
@@ -43,6 +47,7 @@ class L2Forwarding(app_manager.RyuApp):
 
         print self.get_str_topo(self.G)
         print self.get_str_topo(self.ST)
+        my_compute_spanning_tree(self.G)
 
     # This method returns a string that describes a graph (nodes and edges, with
     # their attributes). You do not need to modify this method.
@@ -141,9 +146,9 @@ class L2Forwarding(app_manager.RyuApp):
             print res
 
         if dst in self.mac_to_port[dpid]:
-            print "found in dictionary"
+            # print "found in dictionary"
             out_port = self.mac_to_port[dpid][dst]
-            print "out_port: " + str(out_port)
+            # print "out_port: " + str(out_port)
             actions = [ofp_parser.OFPActionOutput(out_port)]
             self.add_flow(datapath, msg.in_port, dst, actions)
             out = ofp_parser.OFPPacketOut(

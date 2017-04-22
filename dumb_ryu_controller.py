@@ -22,7 +22,7 @@ def compute_spanning_tree(G):
     return ST
 
 
-def my_compute_spanning_tree(graph):
+def get_my_spanning_tree(graph):
     # print "printing graph..."
     # print graph
     # print graph.node
@@ -101,9 +101,10 @@ class L2Forwarding(app_manager.RyuApp):
         print "Spanning..."
         print self.get_str_topo(self.ST)
         # my_compute_spanning_tree(self.G)
-        min_spanning_tree = my_compute_spanning_tree(self.G)
+        min_spanning_tree = get_my_spanning_tree(self.G)
         print "My Spanning!"
         print self.get_str_topo(min_spanning_tree)
+        self.MY_ST = min_spanning_tree
 
     # This method returns a string that describes a graph (nodes and edges, with
     # their attributes). You do not need to modify this method.
@@ -196,10 +197,10 @@ class L2Forwarding(app_manager.RyuApp):
 
         self.mac_to_port[dpid][src] = msg.in_port
         # print self.get_str_mactoport(self.ST, dpid)
-        res = 'MAC-To-Port table of the switch ' + str(dpid) + '\n'
-        for mac_addr, outport in self.ST.node[dpid].items():
-            res += str(mac_addr) + ' -> ' + str(outport) + '\n'
-            print res
+        # res = 'MAC-To-Port table of the switch ' + str(dpid) + '\n'
+        # for mac_addr, outport in self.ST.node[dpid].items():
+        #     res += str(mac_addr) + ' -> ' + str(outport) + '\n'
+        #     print res
 
         if dst in self.mac_to_port[dpid]:
             # print "found in dictionary"
@@ -212,7 +213,7 @@ class L2Forwarding(app_manager.RyuApp):
                 actions=actions)
             datapath.send_msg(out)
         else:
-            neighbors = self.get_neighbors(dpid, self.ST)
+            neighbors = self.get_neighbors(dpid, self.MY_ST)
             actions = []
             for out_port in neighbors:
                 actions.append(ofp_parser.OFPActionOutput(out_port))

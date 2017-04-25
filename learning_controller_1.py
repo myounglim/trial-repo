@@ -82,9 +82,9 @@ class L2Forwarding(app_manager.RyuApp):
         self.ST = compute_spanning_tree(self.G)
 
         # print "Regular..."
-        # print self.get_str_topo(self.G)
+        print self.get_str_topo(self.G)
         # print "Spanning..."
-        # print self.get_str_topo(self.ST)
+        print self.get_str_topo(self.ST)
         # my_compute_spanning_tree(self.G)
         # min_spanning_tree = get_my_spanning_tree(self.G)
         # print "My Spanning!"

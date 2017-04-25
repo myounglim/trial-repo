@@ -28,16 +28,6 @@ def get_my_spanning_tree(graph):
     # print "\n"
     # print nx.get_node_attributes(graph, 'ports')
     # print "\n"
-
-    # print "Getting neighbors..."
-    # res = 'Edges:\tfrom->to\n'
-    # for node in graph:
-    #     totmp = []
-    #     for adjacent in graph[node]:
-    #         totmp.append(adjacent)
-    #     res += str(node) + ' -> ' + str(totmp) + '\n'
-    #
-    # print res
     my_graph = nx.Graph()
     my_graph.add_nodes_from(graph.nodes(data=True))
     # print my_graph.node
@@ -97,7 +87,7 @@ class L2Forwarding(app_manager.RyuApp):
 
         print "Regular..."
         print self.get_str_topo(self.G)
-        print "Spanning..."
+        print "NX Lib Spanning..."
         print self.get_str_topo(self.ST)
         # my_compute_spanning_tree(self.G)
         min_spanning_tree = get_my_spanning_tree(self.G)

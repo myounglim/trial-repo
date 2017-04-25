@@ -28,16 +28,6 @@ def get_my_spanning_tree(graph):
     # print "\n"
     # print nx.get_node_attributes(graph, 'ports')
     # print "\n"
-
-    # print "Getting neighbors..."
-    # res = 'Edges:\tfrom->to\n'
-    # for node in graph:
-    #     totmp = []
-    #     for adjacent in graph[node]:
-    #         totmp.append(adjacent)
-    #     res += str(node) + ' -> ' + str(totmp) + '\n'
-    #
-    # print res
     my_graph = nx.Graph()
     my_graph.add_nodes_from(graph.nodes(data=True))
     # print my_graph.node

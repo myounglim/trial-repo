@@ -273,12 +273,3 @@ class L2Forwarding(app_manager.RyuApp):
         # if out_port != ofp.OFPP_FLOOD:
         #     self.add_flow(datapath, msg.in_port, dst, actions)
 
-
-    # We create an OF_PacketOut message with action of type FLOOD
-    # This simple forwarding action works only for loopless topologies
-        #actions = [ofp_parser.OFPActionOutput(ofp.OFPP_FLOOD)]
-        # out = ofp_parser.OFPPacketOut(
-        #     datapath=datapath, buffer_id=msg.buffer_id, in_port=msg.in_port,
-        #     actions=actions)
-        # datapath.send_msg(out)
-
